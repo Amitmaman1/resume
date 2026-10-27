@@ -1,0 +1,85 @@
+name: Build CV
+
+on:
+  push:
+    branches: [main]
+    paths: [cv.html, scripts/**, .github/workflows/build-cv.yml]
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Playwright + Chromium
+        run: |
+          pip install playwright
+          playwright install --with-deps chromium
+
+      - name: Build PDF
+        run: python scripts/build_pdf.py cv.html "dist/Amit Maman CV.pdf"
+
+      - name: Check it is a single page
+        run: |
+          sudo apt-get install -y poppler-utils >/dev/null
+          pages=$(pdfinfo "dist/Amit Maman CV.pdf" | awk '/^Pages:/ {print $2}')
+          echo "pages: $pages"
+          test "$pages" -eq 1
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cv-pdf
+          path: dist/*.pdf
+
+      # Every tag (v1.0, v1.1, ...) becomes a downloadable version
+      - name: Publish release
+        if: startsWith(github.ref, 'refs/tags/v')
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "${GITHUB_REF_NAME}" "dist/Amit Maman CV.pdf" \
+            --title "CV ${GITHUB_REF_NAME}" --generate-notes
+
+      # --- Nextcloud upload (runs only when the secrets exist) ---
+      - name: Check Nextcloud secrets
+        id: nc
+        env:
+          NC_URL: ${{ secrets.NEXTCLOUD_URL }}
+        run: echo "enabled=$([ -n "$NC_URL" ] && echo true || echo false)" >> "$GITHUB_OUTPUT"
+
+      # Nextcloud is only reachable over Tailscale, so join the tailnet first
+      - name: Connect to Tailscale
+        if: steps.nc.outputs.enabled == 'true'
+        uses: tailscale/github-action@v3
+        with:
+          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
+          tags: tag:ci
+
+      - name: Upload PDF to Nextcloud
+        if: steps.nc.outputs.enabled == 'true'
+        env:
+          NC_URL: ${{ secrets.NEXTCLOUD_URL }}            # e.g. https://cloud.example.internal
+          NC_USER: ${{ secrets.NEXTCLOUD_USER }}
+          NC_APP_PASSWORD: ${{ secrets.NEXTCLOUD_APP_PASSWORD }}
+          NC_FOLDER: ${{ secrets.NEXTCLOUD_FOLDER }}      # e.g. CV
+          NC_CA_CERT: ${{ secrets.NEXTCLOUD_CA_CERT }}    # optional: your internal CA, PEM
+        run: |
+          ca=()
+          if [ -n "$NC_CA_CERT" ]; then
+            printf '%s\n' "$NC_CA_CERT" > "$RUNNER_TEMP/ca.pem"
+            ca=(--cacert "$RUNNER_TEMP/ca.pem")
+          fi
+          curl --fail --silent --show-error "${ca[@]}" \
+            -u "$NC_USER:$NC_APP_PASSWORD" \
+            -T "dist/Amit Maman CV.pdf" \
+            "$NC_URL/remote.php/dav/files/$NC_USER/$NC_FOLDER/Amit%20Maman%20CV.pdf"

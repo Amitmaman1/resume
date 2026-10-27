@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Amit Maman — DevOps Engineer</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  @page { size: A4; margin: 0.3in; }
+  body{font-family:'Inter',Arial,Helvetica,sans-serif;max-width:800px;margin:0.3in auto 0.3in;color:#000;line-height:1.3;font-size:9.5pt}
+  header{margin-bottom:8px}
+  h1{margin:0;font-size:16pt;font-weight:700}
+  .muted{color:#555;font-size:8.5pt;margin-top:1px}
+  .contact{font-size:8pt;color:#000;margin-top:2px}
+  .contact a{color:#0066cc;text-decoration:none}
+  .section-title{font-weight:700;font-size:9.8pt;margin:8px 0 3px;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid #ccc;padding-bottom:1px}
+  .job-title{font-weight:700;font-size:9.5pt;margin:5px 0 2px}
+  ul{margin:2px 0 4px 15px;padding:0;list-style:disc}
+  li{margin-bottom:2px;font-size:9pt;line-height:1.28}
+  .stack{font-size:8.8pt;margin:4px 0 6px}
+  .stack b{font-weight:700}
+  .small{font-size:7.8pt;color:#333;margin-top:1px}
+  .project-title{font-weight:700;font-size:9.3pt;margin:4px 0 2px}
+  .project-title a{color:#0066cc;text-decoration:none}
+  p{margin:1px 0;font-size:9pt;line-height:1.3}
+  .inline-list{display:inline;margin:0;padding:0;list-style:none}
+  .inline-list li{display:inline;margin-right:12px}
+  @media print {
+    body{margin:0.1in auto}
+    .no-print{display:none}
+  }
+</style>
+</head>
+<body>
+
+<h1>Amit Maman</h1>
+<div class="muted">DevOps Engineer</div>
+<div class="contact">
+  amitmaman1235@gmail.com | 054-450-5876 |
+  <a href="https://github.com/Amitmaman1" target="_blank">github.com/Amitmaman1</a> |
+  <a href="https://www.linkedin.com/in/amit-maman-222546343/" target="_blank">linkedin.com/in/amit-maman</a>
+</div>
+
+<div class="section-title">Summary</div>
+<p>DevOps Engineer with hands-on experience in AWS, Azure, OpenShift, Kubernetes, Terraform, CI/CD and GitOps. Experienced in taking services from repository to production and operating them across multiple clusters and environments. AWS Certified Solutions Architect, Red Hat RHCSA and RHCE.</p>
+
+<div class="stack">
+  <b>Cloud:</b> AWS, Azure &nbsp;·&nbsp;
+  <b>IaC &amp; config:</b> Terraform, Ansible &nbsp;·&nbsp;
+  <b>Containers &amp; GitOps:</b> Kubernetes, OpenShift, Docker, Helm, ArgoCD &nbsp;·&nbsp;
+  <b>CI/CD:</b> GitHub Actions, GitLab CI &nbsp;·&nbsp;
+  <b>Security:</b> Vault &nbsp;·&nbsp;
+  <b>Observability:</b> Prometheus, Grafana &nbsp;·&nbsp;
+  <b>Platform:</b> Proxmox, Linux &nbsp;·&nbsp;
+  <b>Scripting:</b> Python, Bash &nbsp;·&nbsp;
+  <b>AI tooling:</b> Cursor, Claude Code, MCP
+</div>
+
+<div class="section-title">Experience</div>
+
+<div class="job-title">Octopus Computer Solutions — DevOps Engineer, Professional Services</div>
+<p>December 2025 - Present</p>
+<ul>
+  <li>Build and operate internal on-prem infrastructure: Kubernetes and Red Hat OpenShift clusters, including installation, upgrades, and day-2 operations.</li>
+  <li>Manage Proxmox virtualization: VM provisioning, templates, storage and network configuration for cluster nodes and internal lab environments.</li>
+  <li>Extend an internal Ansible and GitLab CI application that provisions lab and cluster infrastructure, giving repeatable, consistent environments on demand.</li>
+</ul>
+
+<div class="project-title">Client: Jeen AI — Enterprise AI Platform</div>
+<ul>
+  <li><b>Helped cut Azure costs by about $200K in a year:</b> purchased an Azure savings plan and cleaned up stale Container Apps environments, unused VMs, and other idle cloud resources.</li>
+  <li>Provision AWS infrastructure with Terraform: EKS and ROSA (Red Hat OpenShift on AWS) clusters, VPC/networking, RDS PostgreSQL, IAM/IRSA, ECR.</li>
+  <li>Bring each new R&amp;D service from repository to dev, staging, and prod with its own container image, Helm chart, secrets, and ArgoCD application.</li>
+  <li>Run production GitOps across clusters with ArgoCD: per-cluster namespace isolation, automated sync, and drift remediation.</li>
+  <li>Integrate AWS Bedrock as the platform LLM backend; operate LiteLLM as the model gateway for multi-provider routing and usage control.</li>
+  <li>Implement secrets management with HashiCorp Vault and External Secrets Operator, syncing from AWS Secrets Manager into workloads.</li>
+  <li>Build the shared CI/CD pipelines for image builds, promotion, and dev/staging/prod releases.</li>
+  <li>Troubleshoot production incidents across pods, nodes, and resource limits using Prometheus and Grafana dashboards.</li>
+  <li>Use AI coding assistants (Cursor, Claude Code) daily for Terraform, Helm, and CI/CD changes and deployment troubleshooting, integrated with GitHub, Jira, and ArgoCD through MCP (Model Context Protocol); every change is reviewed through pull requests.</li>
+</ul>
+<div class="small">AWS (EKS, ROSA, RDS, Bedrock, Secrets Manager, IAM/IRSA) · Azure · Terraform · OpenShift · Kubernetes · Helm · ArgoCD · Vault · External Secrets Operator · LiteLLM · Prometheus · Grafana</div>
+
+<div class="section-title">Technical Projects</div>
+
+<div class="project-title">Home Kubernetes Cluster – GitOps Home Lab</div>
+<ul>
+  <li>Run a self-hosted k3s cluster (Raspberry Pi 5 control-plane + 2 Oracle Cloud free-tier VM workers, joined over Tailscale) hosting 15+ applications across 17 namespaces.</li>
+  <li>Manage the cluster as code with ArgoCD app-of-apps: one Git repo syncs the infra layer (cert-manager, Envoy Gateway) and each application.</li>
+  <li>Operate Envoy Gateway (Kubernetes Gateway API) with cert-manager and a self-hosted internal CA for automatic TLS across all services on a private internal domain, exposed only over Tailscale.</li>
+  <li>Run Keycloak for centralized SSO/identity and a self-hosted Zot OCI registry for internal container images.</li>
+  <li>Deploy a full observability stack (kube-prometheus-stack: Prometheus, Grafana, Alertmanager, node-exporter) monitoring all cluster nodes and workloads.</li>
+  <li>Self-host a local LLM stack (Ollama + LiteLLM gateway) alongside internal services such as Nextcloud and Vaultwarden.</li>
+</ul>
+
+<div class="section-title">Certifications</div>
+<ul class="inline-list">
+  <li>AWS Certified Solutions Architect – Associate (SAA-C03)</li>
+  <li>Red Hat Certified System Administrator (RHCSA)</li>
+  <li>Red Hat Certified Engineer (RHCE)</li>
+</ul>
+
+<div class="section-title" style="margin-top:6px">Additional</div>
+<p><strong>Military Service:</strong> Artillery Force Commander, IDF | <strong>Languages:</strong> Hebrew (Native), English (Fluent)</p>
+
+</body>
+</html>
